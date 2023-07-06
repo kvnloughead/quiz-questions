@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const pageNames = ["task-1"];
+const pageNames = ["bem-naming-syntax"];
 const pages = pageNames.map(
   (name) =>
     new HtmlWebpackPlugin({

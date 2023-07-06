@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>BEM Naming Quizzes</title>
+  </head>
+  <body class="page">
+    <header>
+      <nav class="page__navigation">
+        <h1 class="page__title">
+          <a class="page__link" href="/">BEM Practice</a> / BEM Naming Quizzes
+          <span class="page__task-step"></span>
+        </h1>
+      </nav>
+    </header>
+    <main class="main">
+      <bem-question></bem-question>
+      <template id="quiz">
+        <form class="quiz">
+          <style>
+            code {
+              background-color: lightgray;
+            }
+          </style>
+          <h2 class="quiz__heading"></h2>
+          <p class="quiz__instruction"></p>
+          <label class="quiz__answer">
+            Your answer:
+            <input name="answer" type="text" class="quiz__input" />
+          </label>
+          <button class="quiz__btn quiz__btn_action_submit" type="submit">
+            Check
+          </button>
+          <button class="quiz__btn quiz__btn_action_next" type="button">
+            Next
+          </button>
+        </form>
+        <p class="message"></p>
+      </template>
+    </main>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>

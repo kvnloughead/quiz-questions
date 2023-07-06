@@ -1,7 +1,7 @@
 import "./index.css";
 import { tasks } from "../scripts/data/tasks.js";
 import { tests } from "../scripts/tests.js";
-import { TaskContent } from "../components/task-content/task-content.js";
+import { TaskContent } from "../components/bem-practice/bem-practice.js";
 
 const taskElement = document.querySelector("task-content");
 const taskStep = document.querySelector(".page__task-step");
