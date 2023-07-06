@@ -1,0 +1,17 @@
+.child {
+  width: 60px;
+  height: 40px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 40px;
+  color: #000;
+  letter-spacing: 0.01em;
+}
+
+.child_pos_first {
+  background-color: #f6d655;
+}
+
+.child_pos_second {
+  background-color: #10ad78;
+}

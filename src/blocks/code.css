@@ -1,0 +1,10 @@
+code {
+  color: #383a42;
+  background: #f7f9fc;
+  box-shadow: inset 0 0 0 1px #dfe5ee;
+  border-radius: 4px;
+  padding: 0.35em 0.55em;
+  font-family: "Menlo", "Ubuntu Mono", consolas, source-code-pro, monospace;
+  font-size: 0.8em;
+  white-space: nowrap;
+}

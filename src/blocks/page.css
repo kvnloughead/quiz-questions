@@ -1,0 +1,64 @@
+.page {
+  margin: 0;
+  color: #000;
+  min-width: 1000px;
+  font-family: "YS Text", "Arial", "Helvetica", sans-serif;
+  font-weight: 400;
+}
+
+.page_place_index {
+  margin: 0 auto;
+  max-width: 1600px;
+  padding: 0 80px;
+}
+
+.page__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.page__title {
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.page__title_place_index {
+  max-width: 380px;
+  font-size: 40px;
+  line-height: 44px;
+  margin: 43px 0 66px;
+  letter-spacing: -0.01em;
+}
+
+.page__intro {
+  margin: 62px 0 18px;
+}
+
+.page__text {
+  font-size: 16px;
+  line-height: 1.19;
+  max-width: 613px;
+  margin: 0 0 16px;
+  display: flex;
+  gap: 20px;
+}
+
+.page__navigation {
+  padding: 23px 0 17px 40px;
+  font-size: 16px;
+  line-height: 1.2;
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.page__link {
+  font-weight: 700;
+  text-decoration: none;
+  color: #000;
+}
+
+.page__link:hover {
+  color: rgba(0, 0, 0, 0.8);
+}

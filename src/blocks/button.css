@@ -1,0 +1,45 @@
+.button {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: none;
+  padding: 9px 16px;
+  color: #404959;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 220ms all ease-in-out;
+}
+
+.button_action_check:hover {
+  background-color: #3f97f3;
+  color: #fff;
+}
+
+.button_action_check:active {
+  background-color: #2a82df;
+  transition: none;
+}
+
+.button_action_check:disabled {
+  background-color: #ffffff80;
+  cursor: auto;
+}
+
+.button_action_next {
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.button_action_next:hover {
+  color: #3f97f3;
+}
+
+.button_action_next:active {
+  color: #2a82df;
+  transition: none;
+}
+
+.button_action_next:disabled {
+  color: #ffffff80;
+  cursor: auto;
+}

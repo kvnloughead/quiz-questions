@@ -1,0 +1,18 @@
+.bullet {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.bullet_type_circle {
+  border-radius: 9999px;
+  background-color: #000;
+}
+
+.bullet_type_triangle {
+  background-image: url(../assets/images/black-triangle.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}

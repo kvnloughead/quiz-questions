@@ -1,0 +1,34 @@
+image: node:latest
+
+.deploy: &deploy
+- npm install -g firebase-tools
+- firebase use positioning-practice-bcdbc --token $FIREBASE_TOKEN
+- npm install
+- npm run build
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - deploy
+
+staging:
+  stage: deploy
+  before_script:
+    - *deploy
+  only:
+    - main
+  script:
+    - firebase deploy
+
+production:
+  stage: deploy
+  before_script:
+    - *deploy
+  only:
+    - main
+  when: manual
+  allow_failure: false
+  script:
+    - firebase deploy

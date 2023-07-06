@@ -1,0 +1,31 @@
+.static-task {
+  display: block;
+  background-color: transparent;
+  margin-left: 52px;
+}
+
+.static-task__div {
+  width: 350px;
+  height: 60px;
+  border-radius: 10px;
+  margin: 0 43px 2px 0;
+  background-color: #e9f1ff;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 11px;
+}
+
+.static-task__button {
+  margin: 0 43px 2px 0;
+  background-color: #3073e8;
+  border-radius: 10px;
+  border: none;
+  padding: 9px 16px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.static-task__button:last-of-type {
+  margin: 0 0 2px 0;
+}

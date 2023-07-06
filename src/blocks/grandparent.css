@@ -1,0 +1,8 @@
+.grandparent {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 360px;
+  height: 240px;
+  background-color: #e9f1ff;
+}

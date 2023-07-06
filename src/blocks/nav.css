@@ -1,0 +1,46 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 76px;
+}
+
+.nav__row {
+  display: flex;
+  gap: 20px;
+}
+
+.nav__link {
+  width: 320px;
+  height: 180px;
+  background: #404959;
+  border-radius: 10px;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+
+.nav__link:hover {
+  box-shadow: 0px 2px 20px 0px #00000040;
+  transform: translateY(-4px);
+}
+
+.nav__link_type_tutorial {
+  background-color: #e9f1ff;
+  box-shadow: 0px 2px 20px 0px #00000019;
+}
+
+.nav__text {
+  font-size: 20px;
+  line-height: 1.2;
+  margin: 20px;
+  font-weight: 400;
+  max-width: 220px;
+}
+
+.nav__text_type_tutorial {
+  color: #404959;
+  font-weight: 500;
+}
