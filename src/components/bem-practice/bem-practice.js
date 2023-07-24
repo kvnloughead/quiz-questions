@@ -1,11 +1,11 @@
 import { html } from "lit";
 
-import { entities, questions } from "./data.js";
+import { entities, bemNamingQuestions } from "../../data/index.js";
 
 class BemQuestion extends HTMLElement {
   constructor() {
     super();
-    this._questions = questions;
+    this._questions = bemNamingQuestions;
     this._entities = entities;
     this._questionNumber = 1;
     this._correctAnswers = 0;
@@ -28,7 +28,8 @@ class BemQuestion extends HTMLElement {
   };
 
   _writeQuestion = () => {
-    this._question = questions[Math.floor(Math.random() * questions.length)];
+    this._question =
+      this._questions[Math.floor(Math.random() * this._questions.length)];
     const lines = this._question.data
       .map((item, i) => {
         return item.length === 0
