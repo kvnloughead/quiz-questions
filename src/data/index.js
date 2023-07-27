@@ -117,13 +117,14 @@ export const demoQuestions = [
     difficulty: "hard",
     question: "`font-size` is not inherited by `<h1>` elements.",
     options: [
-      { option: "False", feedback: "Correct", correct: true },
+      { option: "False", feedback: "Correct" },
       {
         option: "True",
         feedback:
           "Actually, it is inherited. However, the inherited `font-size` may not be applied, because it is often overwritten by the browser's user agent.",
       },
     ],
+    answer: false,
     showAll: true,
     // specify alternate labels to use instead of default True/False
     // alternateLabels: ["Yes", "No"],

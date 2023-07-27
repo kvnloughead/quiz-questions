@@ -1,22 +1,26 @@
 import { html, LitElement } from "lit";
 
-import { NumberForm } from "../number-form/number-form";
 import { demoQuestions } from "../../data/index.js";
 
 class QuizQuestion extends LitElement {
   constructor() {
     super();
-    this._numberQuestions = 5;
+    this.numberQuestions = 5;
+    this._maxQuestions = 10;
     this._questions = demoQuestions;
     this._questionNumber = 1;
     this._correctAnswers = 0;
-    this._maxQuestions = 10;
     this._currentQuestion = this._getQuestion();
+    this._options = this._getOptions();
   }
+
+  connectedCallback = () => {};
 
   static get properties() {
     return {
-      _numberQuestions: { type: Number },
+      numberQuestions: { type: Number },
+      _selectedAnswer: { type: { value: String, correct: Boolean } },
+      _options: { attribute: false, type: [], default: [] },
     };
   }
 
@@ -24,12 +28,30 @@ class QuizQuestion extends LitElement {
     return this._questions[Math.floor(Math.random() * this._questions.length)];
   };
 
-  _setEventListeners() {
-    this._numberQuestionsForm.addEventListener("submit", (evt) => {
-      evt.preventDefault();
-      this._maxQuestions = evt.currentTarget.elements["num-questions"].value;
-    });
+  _getOptions = () => {
+    if (this._currentQuestion.type === "single-choice") {
+      let options = [],
+        possibleOptions = [];
+      this._currentQuestion.options.forEach((option) => {
+        if (option.alwaysInclude) {
+          options.push(option);
+        } else {
+          possibleOptions.push(option);
+        }
+      });
+      if (options.length < this._currentQuestion.numberOfOptions) {
+        options = options.concat(
+          possibleOptions
+            .sort(() => 0.5 - Math.random())
+            .slice(0, this._currentQuestion.numberOfOptions - options.length)
+        );
+      }
+      options.sort(() => 0.5 - Math.random());
+      return options;
+    }
+  };
 
+  _setEventListeners() {
     this._form.addEventListener("submit", (evt) => {
       evt.preventDefault();
       if (this._input.value === this._question.answer) {
@@ -51,6 +73,15 @@ class QuizQuestion extends LitElement {
     });
   }
 
+  _checkAnswer(evt) {
+    evt.preventDefault();
+    return this._selectedAnswer.correct;
+  }
+
+  _handleRadioChange(evt, correct) {
+    this._selectedAnswer = { value: evt.target.value, correct };
+  }
+
   _renderOptions() {
     if (this._currentQuestion.type === "text") {
       return html`
@@ -60,37 +91,22 @@ class QuizQuestion extends LitElement {
         </label>
       `;
     } else if (this._currentQuestion.type === "single-choice") {
-      let options = [],
-        possibleOptions = [];
-      this._currentQuestion.options.forEach((option) => {
-        if (option.alwaysInclude) {
-          options.push(option);
-        } else {
-          possibleOptions.push(option);
-        }
-      });
-      if (options.length < this._currentQuestion.numberOfOptions) {
-        options = options.concat(
-          possibleOptions
-            .sort(() => 0.5 - Math.random())
-            .slice(0, this._currentQuestion.numberOfOptions - options.length)
-        );
-      }
-      options.sort(() => 0.5 - Math.random());
-
       return html`
         <fieldset>
           <legend>Choose your answer:</legend>
-          ${options.map((option) => {
+          ${this._options.map((option) => {
             return html`
               <div>
                 <input
                   type="radio"
                   id=${option.option}
-                  name=${option.option}
+                  name="single-choice-${option.id}"
                   value=${option.option}
+                  @change=${(evt) => {
+                    this._handleRadioChange(evt, option.correct);
+                  }}
                 />
-                <label for=${options.option}>${option.option}</label>
+                <label for=${this._options.option}>${option.option}</label>
               </div>
             `;
           })}
@@ -105,8 +121,11 @@ class QuizQuestion extends LitElement {
             <input
               type="radio"
               id="answer-true"
-              name="answer-true"
-              value="answer-true"
+              name="true-or-false"
+              value="${true}"
+              @change=${(evt) => {
+                this._handleRadioChange(evt, this._currentQuestion.answer);
+              }}
             />
             <label for="answer-true">${labels[0]}</label>
           </div>
@@ -114,8 +133,11 @@ class QuizQuestion extends LitElement {
             <input
               type="radio"
               id="answer-false"
-              name="answer-false"
-              value="answer-false"
+              name="true-or-false"
+              value="${false}"
+              @change=${(evt) => {
+                this._handleRadioChange(evt, !this._currentQuestion.answer);
+              }}
             />
             <label for="answer-false">${labels[1]}</label>
           </div>
@@ -131,14 +153,13 @@ class QuizQuestion extends LitElement {
         label="Select the number of questions to answer."
         buttonText="Start quiz"
         min="3"
-        max="100"
-        value="10"
+        max="${this._maxQuestions}"
+        value="${this.numberQuestions}"
         @submit-number-form="${(evt) => {
-          this._numberQuestions = evt.detail;
+          this.numberQuestions = evt.detail;
         }}"
       ></number-form>
-      <form class="quiz">
-        ${this._numberQuestions}
+      <form class="quiz" @submit="${this._checkAnswer}">
         <style>
           code {
             background-color: lightgray;
@@ -166,9 +187,5 @@ class QuizQuestion extends LitElement {
     `;
   }
 }
-
-//   _render(options) {
-
-// }
 
 customElements.define("quiz-question", QuizQuestion);
