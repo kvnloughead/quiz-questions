@@ -1,8 +1,11 @@
 import { html, LitElement } from "lit";
 
 import { demoQuestions } from "../../data/index.js";
+import quizQuestionsStyles from "./styles";
 
 class QuizQuestion extends LitElement {
+  static styles = quizQuestionsStyles;
+
   constructor() {
     super();
     this.numberQuestions = 5;
@@ -14,13 +17,17 @@ class QuizQuestion extends LitElement {
     this._options = this._getOptions();
   }
 
-  connectedCallback = () => {};
-
   static get properties() {
     return {
       numberQuestions: { type: Number },
       _selectedAnswer: { type: { value: String, correct: Boolean } },
       _options: { attribute: false, type: [], default: [] },
+      _showFeedback: {
+        attribute: false,
+        type: { string: Boolean },
+        default: false,
+        _showAll: { attribute: true, type: Boolean, default: false },
+      },
     };
   }
 
@@ -48,6 +55,8 @@ class QuizQuestion extends LitElement {
       }
       options.sort(() => 0.5 - Math.random());
       return options;
+    } else if (this._currentQuestion.type === "true-or-false") {
+      return this._currentQuestion.options;
     }
   };
 
@@ -75,11 +84,13 @@ class QuizQuestion extends LitElement {
 
   _checkAnswer(evt) {
     evt.preventDefault();
+    this._showFeedback =
+      this._currentQuestion.showAll || this._selectedAnswer.id;
     return this._selectedAnswer.correct;
   }
 
-  _handleRadioChange(evt, correct) {
-    this._selectedAnswer = { value: evt.target.value, correct };
+  _handleRadioChange(evt, correct, id) {
+    this._selectedAnswer = { value: evt.target.value, correct, id };
   }
 
   _renderOptions() {
@@ -90,57 +101,42 @@ class QuizQuestion extends LitElement {
           <input name="answer" type="text" class="quiz__input" />
         </label>
       `;
-    } else if (this._currentQuestion.type === "single-choice") {
+    } else if (
+      this._currentQuestion.type === "single-choice" ||
+      this._currentQuestion.type === "true-or-false"
+    ) {
       return html`
         <fieldset>
           <legend>Choose your answer:</legend>
-          ${this._options.map((option) => {
+          ${this._options.map((option, i) => {
             return html`
               <div>
                 <input
                   type="radio"
-                  id=${option.option}
+                  id=${i}
                   name="single-choice-${option.id}"
                   value=${option.option}
                   @change=${(evt) => {
-                    this._handleRadioChange(evt, option.correct);
+                    this._handleRadioChange(evt, option.correct, i);
                   }}
                 />
                 <label for=${this._options.option}>${option.option}</label>
+                <span
+                  id="${i}-message"
+                  class="message 
+                    ${this._showFeedback === true || this._showFeedback === i
+                    ? ""
+                    : " message_hidden"}  
+                    ${option.correct
+                    ? " message_type_success"
+                    : "message_type_error"}
+                    ${this._selectedAnswer?.correct ? " message_correct" : ""}"
+                >
+                  ${option.feedback || this._currentQuestion.feedback}
+                </span>
               </div>
             `;
           })}
-        </fieldset>
-      `;
-    } else if (this._currentQuestion.type === "true-or-false") {
-      const labels = this._currentQuestion.alternateLabels || ["True", "False"];
-      return html`
-        <fieldset>
-          <legend>True or false:</legend>
-          <div>
-            <input
-              type="radio"
-              id="answer-true"
-              name="true-or-false"
-              value="${true}"
-              @change=${(evt) => {
-                this._handleRadioChange(evt, this._currentQuestion.answer);
-              }}
-            />
-            <label for="answer-true">${labels[0]}</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              id="answer-false"
-              name="true-or-false"
-              value="${false}"
-              @change=${(evt) => {
-                this._handleRadioChange(evt, !this._currentQuestion.answer);
-              }}
-            />
-            <label for="answer-false">${labels[1]}</label>
-          </div>
         </fieldset>
       `;
     }

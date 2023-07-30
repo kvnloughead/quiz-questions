@@ -89,7 +89,7 @@ export const demoQuestions = [
     id: 0,
     type: "single-choice",
     question: "Which HTML tag is used to create hyperlinks?",
-    feedback: "Actually, the correct answer is <a>.`",
+    feedback: "Actually, the correct answer is `<a>`.",
     numberOfOptions: 4,
     options: [
       {
@@ -101,7 +101,7 @@ export const demoQuestions = [
       {
         option: "<link>",
         feedback:
-          "Actually, this is used to link external documents to a, n HTML document. The correct answer is `<a>`.",
+          "Actually, this is used to link external documents to an HTML document. The correct answer is `<a>`.",
         alwaysInclude: true,
       },
       { option: "<hyper>" },
@@ -117,17 +117,13 @@ export const demoQuestions = [
     difficulty: "hard",
     question: "`font-size` is not inherited by `<h1>` elements.",
     options: [
-      { option: "False", feedback: "Correct" },
       {
         option: "True",
         feedback:
           "Actually, it is inherited. However, the inherited `font-size` may not be applied, because it is often overwritten by the browser's user agent.",
       },
+      { option: "False", correct: true, feedback: "Correct" },
     ],
-    answer: false,
-    showAll: true,
-    // specify alternate labels to use instead of default True/False
-    // alternateLabels: ["Yes", "No"],
   },
   // {
   //   id: 2,
