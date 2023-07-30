@@ -8,8 +8,8 @@ class QuizQuestion extends LitElement {
 
   constructor() {
     super();
-    this.numberQuestions = 5;
-    this._maxQuestions = 10;
+    // this.numberQuestions = 5;
+    // this._maxQuestions = 10;
     this._questions = demoQuestions;
     this._questionNumber = 1;
     this._correctAnswers = 0;
@@ -26,8 +26,8 @@ class QuizQuestion extends LitElement {
         attribute: false,
         type: { string: Boolean },
         default: false,
-        _showAll: { attribute: true, type: Boolean, default: false },
       },
+      _showAll: { type: Boolean, default: false },
     };
   }
 
@@ -144,26 +144,7 @@ class QuizQuestion extends LitElement {
 
   render() {
     return html`
-      <number-form
-        name="num-questions"
-        label="Select the number of questions to answer."
-        buttonText="Start quiz"
-        min="3"
-        max="${this._maxQuestions}"
-        value="${this.numberQuestions}"
-        @submit-number-form="${(evt) => {
-          this.numberQuestions = evt.detail;
-        }}"
-      ></number-form>
       <form class="quiz" @submit="${this._checkAnswer}">
-        <style>
-          code {
-            background-color: lightgray;
-          }
-          .button_hidden {
-            visibility: hidden;
-          }
-        </style>
         <p class="quiz__question">
           ${this._questionNumber}. ${this._currentQuestion.question}
         </p>

@@ -1,6 +1,11 @@
 import { css, unsafeCSS } from "lit";
 
 const quizQuestionStyles = css`
+  code {
+    background-color: lightgray;
+    font-family: monospace;
+  }
+
   .message {
     color: grey;
   }
@@ -19,6 +24,10 @@ const quizQuestionStyles = css`
 
   .message_hidden {
     display: none;
+  }
+
+  .button_hidden {
+    visibility: hidden;
   }
 `;
 

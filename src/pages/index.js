@@ -1,4 +1,5 @@
 import "./index.css";
+import "../components/quiz-app/quiz-app.js";
 import "../components/bem-practice/bem-practice.js";
 import "../components/quiz-question/quiz-question.js";
 import "../components/number-form/number-form.js";
