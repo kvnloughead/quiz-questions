@@ -14,6 +14,11 @@ class QuizApp extends LitElement {
     };
   }
 
+  createRenderRoot() {
+    // disable shadow dom
+    return this;
+  }
+
   render() {
     return html`
       <number-form
@@ -27,7 +32,15 @@ class QuizApp extends LitElement {
           this._numberQuestions = evt.detail;
         }}"
       ></number-form>
-      <quiz-question numberQuestions="${this._numberQuestions}"></quiz-question>
+      <quiz-question numberQuestions="${this._numberQuestions}">
+        <span slot="buttons">
+          <button class="button button_action_next" type="button">Next</button>
+        </span>
+        <p class="message"></p>
+        <p class="message message_type_summary"></p>
+        <!-- <button class="button button_action_start button_hidden"> -->
+        <button class="button button_action_start">Try again?</button>
+      </quiz-question>
     `;
   }
 }

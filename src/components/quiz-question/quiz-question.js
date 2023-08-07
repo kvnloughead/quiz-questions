@@ -1,11 +1,8 @@
 import { html, LitElement } from "lit";
 
 import { demoQuestions } from "../../data/index.js";
-import quizQuestionsStyles from "./styles";
 
 class QuizQuestion extends LitElement {
-  static styles = quizQuestionsStyles;
-
   constructor() {
     super();
     // this.numberQuestions = 5;
@@ -83,6 +80,7 @@ class QuizQuestion extends LitElement {
   }
 
   _checkAnswer(evt) {
+    debugger;
     evt.preventDefault();
     this._showFeedback =
       this._currentQuestion.showAll || this._selectedAnswer.id;
@@ -141,6 +139,34 @@ class QuizQuestion extends LitElement {
       `;
     }
   }
+  // updated() {
+  //   // Schedule the moving of the children to the next microtask
+  //   Promise.resolve().then(() => {
+  //     // mimic a <slot> in a component without shadow DOM
+  //     const slot = this.querySelector(".slot");
+  //     while (this.firstChild) {
+  //       console.log(this.firstChild);
+  //       slot.appendChild(this.firstChild);
+  //     }
+  //   });
+  // }
+
+  updated() {
+    // Schedule the moving of the children to the next microtask
+    Promise.resolve().then(() => {
+      // Select the children that have a slot attribute
+      const slottedChildren = this.querySelectorAll("[slot='buttons']");
+      const slot = this.querySelector(".slot");
+      slottedChildren.forEach((child) => {
+        slot.appendChild(child);
+      });
+    });
+  }
+
+  createRenderRoot() {
+    // disable shadow dom
+    return this;
+  }
 
   render() {
     return html`
@@ -149,18 +175,13 @@ class QuizQuestion extends LitElement {
           ${this._questionNumber}. ${this._currentQuestion.question}
         </p>
         ${this._renderOptions()}
-        <button class="quiz__btn quiz__btn_action_submit" type="submit">
-          Check
-        </button>
-        <button class="quiz__btn quiz__btn_action_next" type="button">
-          Next
-        </button>
+
+        <div class="slot">
+          <button class="quiz__btn quiz__btn_action_check" type="submit">
+            Check
+          </button>
+        </div>
       </form>
-      <p class="message"></p>
-      <p class="message message_type_summary"></p>
-      <button class="button button_action_start button_hidden">
-        Try again?
-      </button>
     `;
   }
 }

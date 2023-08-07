@@ -1,0 +1,20 @@
+.quiz__btn {
+  border-radius: 10px;
+  border: none;
+  padding: 9px 16px;
+  color: #404959;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 220ms all ease-in-out;
+}
+
+.quiz__btn_action_check:hover {
+  background-color: #3f97f3;
+  color: #fff;
+}
+
+.quiz__btn_action_check:active {
+  background-color: #2a82df;
+  transition: none;
+}

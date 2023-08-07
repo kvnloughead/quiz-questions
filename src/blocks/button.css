@@ -43,3 +43,7 @@
   color: #ffffff80;
   cursor: auto;
 }
+
+.button_hidden {
+  display: none;
+}

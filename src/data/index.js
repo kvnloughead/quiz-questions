@@ -109,6 +109,7 @@ export const demoQuestions = [
       { option: "<href>" },
       { option: "<li>" },
     ],
+    showAll: true,
   },
 
   {
