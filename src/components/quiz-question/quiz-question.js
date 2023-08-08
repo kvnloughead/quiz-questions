@@ -5,55 +5,59 @@ import { demoQuestions } from "../../data/index.js";
 class QuizQuestion extends LitElement {
   constructor() {
     super();
-    // this.numberQuestions = 5;
-    // this._maxQuestions = 10;
-    this._questions = demoQuestions;
-    this._questionNumber = 1;
-    this._correctAnswers = 0;
-    this._currentQuestion = this._getQuestion();
-    this._options = this._getOptions();
+    this._allQuestions = [...demoQuestions];
+    this._questions = [...this._allQuestions];
+    this._effectiveQuestionNumber = 0;
   }
 
   static get properties() {
     return {
       numberQuestions: { type: Number },
+      questionNumber: { type: Number },
+      numberCorrect: { type: Number },
       _selectedAnswer: { type: { value: String, correct: Boolean } },
-      _options: { attribute: false, type: [], default: [] },
+      _options: { attribute: false, type: Array },
       _showFeedback: {
         attribute: false,
         type: { string: Boolean },
-        default: false,
       },
-      _showAll: { type: Boolean, default: false },
+      _showAll: { type: Boolean },
+      _questions: { type: Array },
+      _effectiveQuestionNumber: { type: Number },
     };
   }
 
-  _getQuestion = () => {
-    return this._questions[Math.floor(Math.random() * this._questions.length)];
+  _shuffle = (questions) => {
+    for (let i = questions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
+    return questions;
   };
 
   _getOptions = () => {
-    if (this._currentQuestion.type === "single-choice") {
+    this._currentQuestion = this._questions[this.questionNumber - 1];
+    if (this._currentQuestion?.type === "single-choice") {
       let options = [],
         possibleOptions = [];
-      this._currentQuestion.options.forEach((option) => {
+      this._currentQuestion?.options.forEach((option) => {
         if (option.alwaysInclude) {
           options.push(option);
         } else {
           possibleOptions.push(option);
         }
       });
-      if (options.length < this._currentQuestion.numberOfOptions) {
+      if (options.length < this._currentQuestion?.numberOfOptions) {
         options = options.concat(
           possibleOptions
             .sort(() => 0.5 - Math.random())
-            .slice(0, this._currentQuestion.numberOfOptions - options.length)
+            .slice(0, this._currentQuestion?.numberOfOptions - options.length)
         );
       }
       options.sort(() => 0.5 - Math.random());
       return options;
-    } else if (this._currentQuestion.type === "true-or-false") {
-      return this._currentQuestion.options;
+    } else if (this._currentQuestion?.type === "true-or-false") {
+      return this._currentQuestion?.options;
     }
   };
 
@@ -80,10 +84,14 @@ class QuizQuestion extends LitElement {
   }
 
   _checkAnswer(evt) {
-    debugger;
     evt.preventDefault();
     this._showFeedback =
-      this._currentQuestion.showAll || this._selectedAnswer.id;
+      this._currentQuestion?.showAll || this._selectedAnswer.id;
+    this.dispatchEvent(
+      new CustomEvent("question-answered", {
+        detail: this._selectedAnswer.correct,
+      })
+    );
     return this._selectedAnswer.correct;
   }
 
@@ -92,7 +100,7 @@ class QuizQuestion extends LitElement {
   }
 
   _renderOptions() {
-    if (this._currentQuestion.type === "text") {
+    if (this._currentQuestion?.type === "text") {
       return html`
         <label class="quiz__answer">
           Your answer:
@@ -100,8 +108,8 @@ class QuizQuestion extends LitElement {
         </label>
       `;
     } else if (
-      this._currentQuestion.type === "single-choice" ||
-      this._currentQuestion.type === "true-or-false"
+      this._currentQuestion?.type === "single-choice" ||
+      this._currentQuestion?.type === "true-or-false"
     ) {
       return html`
         <fieldset>
@@ -130,7 +138,7 @@ class QuizQuestion extends LitElement {
                     : "message_type_error"}
                     ${this._selectedAnswer?.correct ? " message_correct" : ""}"
                 >
-                  ${option.feedback || this._currentQuestion.feedback}
+                  ${option.feedback || this._currentQuestion?.feedback}
                 </span>
               </div>
             `;
@@ -139,19 +147,33 @@ class QuizQuestion extends LitElement {
       `;
     }
   }
-  // updated() {
-  //   // Schedule the moving of the children to the next microtask
-  //   Promise.resolve().then(() => {
-  //     // mimic a <slot> in a component without shadow DOM
-  //     const slot = this.querySelector(".slot");
-  //     while (this.firstChild) {
-  //       console.log(this.firstChild);
-  //       slot.appendChild(this.firstChild);
-  //     }
-  //   });
-  // }
 
-  updated() {
+  updated(changedProps) {
+    // TODO - switch from console.log to UI effects
+    if (changedProps.has("questionNumber")) {
+      if (this.questionNumber > this.numberQuestions) {
+        console.log("Quiz is complete");
+        console.log(
+          `You got ${this.numberCorrect} correct out of ${this.numberQuestions}`
+        );
+      } else {
+        this._effectiveQuestionNumber++;
+        this._options = this._getOptions();
+        this._showFeedback = false;
+      }
+    }
+
+    if (changedProps.has("numberQuestions")) {
+      if (changedProps.has("numberQuestions")) {
+        this._questions = this._shuffle([...this._allQuestions]).slice(
+          0,
+          this.numberQuestions
+        );
+      }
+    }
+  }
+
+  firstUpdated() {
     // Schedule the moving of the children to the next microtask
     Promise.resolve().then(() => {
       // Select the children that have a slot attribute
@@ -172,7 +194,7 @@ class QuizQuestion extends LitElement {
     return html`
       <form class="quiz" @submit="${this._checkAnswer}">
         <p class="quiz__question">
-          ${this._questionNumber}. ${this._currentQuestion.question}
+          ${this._effectiveQuestionNumber}. ${this._currentQuestion?.question}
         </p>
         ${this._renderOptions()}
 

@@ -126,6 +126,22 @@ export const demoQuestions = [
       { option: "False", correct: true, feedback: "Correct" },
     ],
   },
+
+  {
+    id: 2,
+    type: "true-or-false",
+    difficulty: "hard",
+    question: "Blah blah.",
+    options: [
+      {
+        option: "True",
+        feedback:
+          "Actually, it is inherited. However, the inherited `font-size` may not be applied, because it is often overwritten by the browser's user agent.",
+      },
+      { option: "False", correct: true, feedback: "Correct" },
+    ],
+  },
+
   // {
   //   id: 2,
   //   type: "multiple-choice",

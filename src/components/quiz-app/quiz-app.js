@@ -3,14 +3,18 @@ import { html, LitElement } from "lit";
 class QuizApp extends LitElement {
   constructor() {
     super();
+    this._questionNumber = 1;
     this._numberQuestions = 5;
     this._maxQuestions = 10;
+    this._numberCorrect = 0;
   }
 
   static get properties() {
     return {
+      _numberCorrect: { type: Number },
+      _questionNumber: { type: Number },
       _numberQuestions: { type: Number },
-      _maxQuestions: { type: Number, default: 10 },
+      _maxQuestions: { type: Number },
     };
   }
 
@@ -32,15 +36,30 @@ class QuizApp extends LitElement {
           this._numberQuestions = evt.detail;
         }}"
       ></number-form>
-      <quiz-question numberQuestions="${this._numberQuestions}">
+      <quiz-question
+        numberQuestions="${this._numberQuestions}"
+        questionNumber="${this._questionNumber}"
+        numberCorrect="${this._numberCorrect}"
+        @question-answered="${(evt) => {
+          this._questionAnswered = true;
+          this._numberCorrect += evt.detail;
+        }}"
+      >
         <span slot="buttons">
-          <button class="button button_action_next" type="button">Next</button>
+          <button
+            class="button button_action_next"
+            type="button"
+            @click="${(evt) => {
+              this._questionNumber += 1;
+            }}"
+          >
+            Next
+          </button>
         </span>
-        <p class="message"></p>
-        <p class="message message_type_summary"></p>
-        <!-- <button class="button button_action_start button_hidden"> -->
-        <button class="button button_action_start">Try again?</button>
       </quiz-question>
+      <p class="message"></p>
+      <p class="message message_type_summary"></p>
+      <button class="button button_action_start">Try again?</button>
     `;
   }
 }
